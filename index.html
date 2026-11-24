@@ -1540,6 +1540,9 @@ body[data-theme] .conss input{width:4.5em;min-height:36px;margin-top:2px;font-si
 body[data-theme] .consauto{display:block;margin-top:4px;border:0;background:none;padding:0;color:var(--t-encre3);font:inherit;font-size:12px;text-decoration:underline;cursor:pointer}
 body[data-theme] .consdel{margin-top:16px}
 body[data-theme] .consdates{display:grid;grid-template-columns:3em 1fr auto 1fr;align-items:center;gap:8px;margin:6px 0}
+body[data-theme] .consset > label{display:block;margin:18px 0 6px}
+body[data-theme] .consset > input[type=text]{display:block;width:100%;max-width:420px;box-sizing:border-box}
+body[data-theme] .consset > p:first-child{margin-bottom:0}
 body[data-theme] .consvalid{margin:12px 0 0;font-weight:700;color:var(--t-plus-texte)}
 body[data-theme] .hb.retard{background:#FFF0DD;color:#8A4B00}
 body[data-theme] .hb.conseil{background:#E8E6F6;color:#3C3480}
@@ -4605,14 +4608,14 @@ function consBannerHTML(n) {
 function consSettingsHTML() {
   const cfg = consCfg(), y = consYear(), P = consPeriods();
   const okNow = cfg.ok === consYearLabel(y);
-  return `<p class="muted" style="font-size:14px">Le suivi du conseil se remplit dans l'onglet Conseil de chaque fiche élève. Il n'apparaît jamais dans la présentation.</p>
+  return `<div class="consset"><p class="muted" style="font-size:14px">Le suivi du conseil se remplit dans l'onglet Conseil de chaque fiche élève. Il n'apparaît jamais dans la présentation.</p>
     <label>Découpage de l'année</label><div class="chips">${[[false, 'Trimestres'], [true, 'Semestres']].map(([v, l]) => `<button class="chip ${cfg.sem === v ? 'on' : ''}" onclick="consCfgSet({sem:${v}});consP=null;openSettingsPage('conseil')">${l}</button>`).join('')}</div>
     <label>Nom de ta matière</label><input type="text" value="${esc(cfg.matiere)}" onchange="consCfgSet({matiere:this.value.trim()||'Technologie'})">
     <h3 style="margin:18px 0 6px">Dates ${consYearLabel(y)}</h3>
     <p class="muted" style="font-size:13px">Elles servent au résumé du trimestre (XP, cartes, oublis, absences, retards).</p>
     ${P.map(([k, l]) => `<div class="consdates"><b>${l}</b><input type="date" value="${cfg.periods[k].a}" aria-label="Début du ${l}" onchange="consSetDate('${k}','a',this.value)"><span>au</span><input type="date" value="${cfg.periods[k].b}" aria-label="Fin du ${l}" onchange="consSetDate('${k}','b',this.value)"></div>`).join('')}
     ${okNow ? `<p class="consvalid">Dates validées pour ${consYearLabel(y)}.</p>` : `<button class="btn primary wide" style="margin-top:12px" onclick="consValidate()">Valider les dates pour ${consYearLabel(y)}</button>`}
-    <button class="btn wide" style="margin-top:8px" onclick="consResetDates()">Remettre les dates habituelles</button>`;
+    <button class="btn wide" style="margin-top:8px" onclick="consResetDates()">Remettre les dates habituelles</button></div>`;
 }
 function consSetDate(k, w, v) {
   if (!v) return;
